@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}L'assistant pédagogique des enseignants{% endblock %}
+{% block content %}
+<div class="home-page">
+  <section class="hero" aria-labelledby="hero-title">
+    <img class="hero-photo" src="{{ url_for('public', path='/hero-classroom-2000.webp') }}" srcset="{{ url_for('public', path='/hero-classroom-1000.webp') }} 1000w, {{ url_for('public', path='/hero-classroom-2000.webp') }} 2000w" sizes="100vw" width="2000" height="1333" decoding="async" alt="Une enseignante accompagne ses élèves dans une salle de classe" fetchpriority="high">
+    <div class="hero-content">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span></span> PENSÉ POUR LES CLASSES DU MAROC</p>
+        <h1 id="hero-title">Chaque cours mérite une <em>idée claire.</em></h1>
+        <p class="hero-description">Préparez vos séquences avec méthode, adaptez vos activités à vos élèves et avancez à votre rythme.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="/assistant">Ouvrir l’assistant <span aria-hidden="true">→</span></a>
+          <a class="hero-secondary" href="#approche">Découvrir la démarche <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-subjects"><span>Mathématiques</span><i></i><span>Arabe</span><i></i><span>Français</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-large"></div><div class="orbit orbit-small"></div>
+        <div class="orbit-point"></div>
+        <div class="lesson-sheet">
+          <div class="sheet-top"><span>CLASSE CLAIRE</span><span class="sheet-star">✳</span></div>
+          <p class="sheet-label">PROCHAINE SÉANCE</p>
+          <h2>Les fractions</h2>
+          <div class="sheet-meta"><span>CM2</span><span>Mathématiques</span></div>
+          <div class="sheet-rule"></div>
+          <div class="sheet-row"><span class="sheet-dot dot-coral"></span><span>Comprendre</span><b>01</b></div>
+          <div class="sheet-row"><span class="sheet-dot dot-yellow"></span><span>S'entraîner</span><b>02</b></div>
+          <div class="sheet-row"><span class="sheet-dot dot-green"></span><span>Progresser</span><b>03</b></div>
+        </div>
+        <div class="floating-tag tag-level"><span>✳</span> DU PRIMAIRE AU COLLÈGE</div>
+        <div class="floating-tag tag-adapt">Une classe,<br><b>plusieurs chemins.</b></div>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#approche"><span>FAIRE DÉFILER</span><i></i></a>
+  </section>
+
+  <section class="promise-band" aria-label="Les atouts de Classe Claire">
+    <div class="promise-grid">
+      <article class="promise-card reveal">
+        <span class="promise-number">01</span>
+        <div><h2>Un cadre clair</h2><p>Niveau, matière et objectif : votre préparation commence avec les bons repères.</p></div>
+        <span class="promise-symbol" aria-hidden="true">↗</span>
+      </article>
+      <article class="promise-card reveal">
+        <span class="promise-number">02</span>
+        <div><h2>Vos ressources au centre</h2><p>Ajoutez vos documents pour guider les réponses avec vos propres supports.</p></div>
+        <span class="promise-symbol" aria-hidden="true">⌕</span>
+      </article>
+      <article class="promise-card reveal">
+        <span class="promise-number">03</span>
+        <div><h2>Votre expertise d’abord</h2><p>Adaptez chaque proposition aux besoins réels de votre classe.</p></div>
+        <span class="promise-symbol" aria-hidden="true">✳</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="intro-band" id="approche">
+    <div class="section-wrap intro-layout reveal">
+      <p class="section-kicker"><span>01</span> UNE AUTRE FAÇON DE PRÉPARER</p>
+      <div class="intro-copy">
+        <h2>Moins de pages blanches.<br><em>Plus d’idées en classe.</em></h2>
+        <p>Un espace de travail pour transformer un thème de cours en objectifs, activités et étapes concrètes, tout en gardant les besoins de vos élèves au centre.</p>
+      </div>
+      <div class="intro-aside"><span class="asterisk">✳</span><span>VOTRE EXPERTISE<br>RESTE AU CENTRE</span></div>
+    </div>
+  </section>
+
+  <section class="method-section" id="enseignants">
+    <div class="section-wrap">
+      <div class="section-heading-row reveal">
+        <div><p class="section-kicker"><span>02</span> SIMPLE, DU DÉBUT À LA CLASSE</p><h2>Une idée devient<br><em>un vrai parcours.</em></h2></div>
+        <p class="section-lead">Posez le cadre, construisez la séance, puis ajustez selon votre classe.</p>
+      </div>
+      <div class="method-steps">
+        <article class="method-step reveal"><span class="step-number">01</span><div class="step-symbol symbol-choose">✳</div><h3>Choisir ses repères</h3><p>Indiquez le niveau, la matière et le thème que vous souhaitez travailler.</p><span class="step-line"></span></article>
+        <article class="method-step reveal"><span class="step-number">02</span><div class="step-symbol symbol-build">↗</div><h3>Structurer le cours</h3><p>Organisez les objectifs, les séances, les supports et les temps d’apprentissage.</p><span class="step-line"></span></article>
+        <article class="method-step reveal"><span class="step-number">03</span><div class="step-symbol symbol-adapt">◎</div><h3>Adapter aux élèves</h3><p>Faites évoluer les activités, les consignes et les aides selon les besoins.</p><span class="step-line"></span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="subjects-section" id="matieres">
+    <div class="section-wrap">
+      <div class="subjects-heading reveal"><div><p class="section-kicker"><span>03</span> AU PLUS PRÈS DE VOS CLASSES</p><h2>Trois matières.<br><em>Une même envie de transmettre.</em></h2></div><p>Des repères adaptés aux niveaux du primaire et du collège marocains.</p></div>
+      <div class="subject-grid">
+        <a class="subject-tile math-tile reveal" href="/assistant?subject=Math%C3%A9matiques"><span class="subject-index">A — 01</span><span class="subject-doodle doodle-math" aria-hidden="true">½</span><h3>Mathématiques</h3><span class="subject-link">Préparer une séquence <b>↗</b></span></a>
+        <a class="subject-tile arabic-tile reveal" href="/assistant?subject=Arabe"><span class="subject-index">A — 02</span><span class="subject-doodle doodle-arabic" aria-hidden="true" lang="ar" dir="rtl">ع</span><h3>Arabe</h3><span class="subject-link">Préparer une séquence <b>↗</b></span></a>
+        <a class="subject-tile french-tile reveal" href="/assistant?subject=Fran%C3%A7ais"><span class="subject-index">A — 03</span><span class="subject-doodle doodle-french" aria-hidden="true">É</span><h3>Français</h3><span class="subject-link">Préparer une séquence <b>↗</b></span></a>
+      </div>
+      <div class="levels-line"><span>PRIMAIRE</span><b>CP</b><b>CE1</b><b>CE2</b><b>CM1</b><b>CM2</b><i></i><span>COLLÈGE</span><b>6ème</b></div>
+    </div>
+  </section>
+
+  <section class="founder-section" id="fondatrice">
+    <div class="founder-inner reveal">
+      <div class="founder-visual">
+        <a class="founder-profile-link" href="https://www.linkedin.com/in/ACoAADX09DIBYNtyLXvQFCSoBV7W66UfZzjuFKA" target="_blank" rel="noopener noreferrer" aria-label="Voir le profil LinkedIn de Laila Elhaouri">
+          <img class="founder-photo" src="{{ url_for('public', path='/Laila-Elhaouri.webp') }}" alt="Portrait de Laila Elhaouri" loading="lazy">
+          <span class="linkedin-badge">LinkedIn <b aria-hidden="true">↗</b></span>
+        </a>
+        <div class="founder-university"><img src="{{ url_for('public', path='/mohamed 5.webp') }}" alt="Logo de l’Université Mohammed V de Rabat" loading="lazy"></div>
+      </div>
+      <div class="founder-copy">
+        <p class="section-kicker"><span>À PROPOS DE LA FONDATRICE</span></p>
+        <h2>Une vision portée par<br><em>Laila Elhaouri.</em></h2>
+        <p>Laila Elhaouri est doctorante-chercheuse à l’Université Mohammed V de Rabat, au Maroc. Elle est à l’origine de Classe Claire, un projet consacré à la préparation pédagogique et à l’accompagnement des enseignants.</p>
+        <span class="founder-affiliation">DOCTORANTE-CHERCHEUSE <i></i> UNIVERSITÉ MOHAMMED V DE RABAT</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-section">
+    <div class="closing-inner reveal"><div><p class="section-kicker"><span>À VOUS DE JOUER</span></p><h2>La prochaine séance<br>commence par <em>une idée.</em></h2></div><a class="button button-light" href="/espace">Entrer dans mon espace <span aria-hidden="true">→</span></a><span class="closing-mark" aria-hidden="true">c.</span></div>
+  </section>
+</div>
+{% endblock %}

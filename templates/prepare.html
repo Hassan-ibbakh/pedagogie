@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Nouvelle préparation{% endblock %}
+{% block breadcrumb %}Nouvelle préparation{% endblock %}
+{% block content %}
+<div class="form-page-header">
+  <p class="eyebrow">NOUVELLE PRÉPARATION <span class="eyebrow-index">01 — 03</span></p>
+  <h1>Posons le <em>cadre.</em></h1>
+  <p class="lead">Quelques repères pour donner une direction à votre séquence.</p>
+</div>
+
+{% if error %}<div class="form-error" role="alert">{{ error }}</div>{% endif %}
+<form class="preparation-form" action="/preparer" method="post">
+  <div class="form-section-title"><span>01</span><h2>La classe</h2></div>
+  <div class="form-fields two-columns">
+    <div class="form-field">
+      <label for="level">Niveau scolaire <b>*</b></label>
+      <select id="level" name="level" required>
+        <option value="" disabled {% if not values or not values.level %}selected{% endif %}>Sélectionner un niveau</option>
+        {% for level in levels %}<option value="{{ level }}" {% if values and values.level == level %}selected{% endif %}>{{ level }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="subject">Matière <b>*</b></label>
+      <select id="subject" name="subject" required>
+        <option value="" disabled {% if not values or not values.subject %}selected{% endif %}>Sélectionner une matière</option>
+        {% for subject in subjects %}<option value="{{ subject }}" {% if values and values.subject == subject %}selected{% endif %}>{{ subject }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-section-title section-spaced"><span>02</span><h2>Le sujet</h2></div>
+  <div class="form-fields">
+    <div class="form-field">
+      <label for="topic">Thème ou chapitre <b>*</b></label>
+      <input id="topic" name="topic" type="text" maxlength="160" placeholder="Ex. Les fractions, la description d’un lieu…" required value="{{ values.topic if values else '' }}">
+    </div>
+    <div class="form-field">
+      <label for="goal">Intention pédagogique <span>FACULTATIF</span></label>
+      <textarea id="goal" name="goal" rows="3" maxlength="500" placeholder="Que souhaitez-vous que vos élèves sachent faire ?">{{ values.goal if values else '' }}</textarea>
+    </div>
+  </div>
+
+  <div class="form-section-title section-spaced"><span>03</span><h2>Le rythme</h2></div>
+  <div class="form-fields">
+    <div class="form-field duration-field">
+      <label for="duration">Durée estimée</label>
+      <select id="duration" name="duration">
+        {% for duration in durations %}<option value="{{ duration }}" {% if values and values.duration == duration %}selected{% elif not values and duration == '2 séances' %}selected{% endif %}>{{ duration }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-actions"><a class="button button-quiet" href="/">Annuler</a><button class="button button-primary" type="submit">Créer le brouillon <span aria-hidden="true">→</span></button></div>
+</form>
+{% endblock %}

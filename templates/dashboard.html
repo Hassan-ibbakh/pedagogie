@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<section class="welcome-band">
+  <div class="welcome-copy">
+    <p class="eyebrow"><span class="dashboard-mark" aria-hidden="true">c.</span> VOTRE ESPACE PÉDAGOGIQUE</p>
+    <h1>Un cours bien pensé<br>change <em>tout.</em></h1>
+    <p class="welcome-subtitle">Un point de départ simple pour préparer une activité adaptée à votre classe.</p>
+  </div>
+  <div class="welcome-art" aria-hidden="true">
+    <div class="orbit orbit-one"></div>
+    <div class="orbit orbit-two"></div>
+    <div class="art-note"><span>idée</span><b>→</b><span>séance</span></div>
+    <div class="art-stamp">CC<br><small>ENSEIGNER<br>AUTREMENT</small></div>
+  </div>
+</section>
+
+<section class="dashboard-grid">
+  <div class="section-main dashboard-start-card">
+    <div class="section-heading">
+      <div><p class="eyebrow">VOTRE PROCHAINE ÉTAPE</p><h2>Poser le cadre</h2></div>
+      <span class="step-count">01 <i>/ 02</i></span>
+    </div>
+    <p class="dashboard-form-intro">Choisissez une classe et une matière. L’assistant vous guidera pour la suite.</p>
+    <form class="quick-form" action="/assistant" method="get">
+      <label class="field-label" for="level">Niveau scolaire</label>
+      <select id="level" name="level" required>
+        <option value="" selected disabled>Choisir une classe</option>
+        <option>CP</option><option>CE1</option><option>CE2</option>
+        <option>CM1</option><option>CM2</option><option>6ème</option>
+      </select>
+      <label class="field-label" for="subject">Matière</label>
+      <select id="subject" name="subject" required>
+        <option value="" selected disabled>Choisir une matière</option>
+        <option>Arabe</option><option>Français</option><option>Mathématiques</option>
+      </select>
+      <button class="button button-primary button-wide" type="submit">Ouvrir l’assistant <span aria-hidden="true">→</span></button>
+    </form>
+  </div>
+  <aside class="dashboard-aside">
+    <div class="aside-topline"><span class="tiny-star">✳</span><span>CONSEIL PRATIQUE</span></div>
+    <h3>Partez de votre classe.</h3>
+    <p>Ajoutez un thème, vos consignes ou vos documents dans l’assistant. Vous pourrez préciser votre demande au fil de la préparation.</p>
+    <div class="aside-rule"></div>
+    <a class="text-link" href="/sequences">Voir mes préparations <span aria-hidden="true">↗</span></a>
+  </aside>
+</section>
+
+<section class="levels-strip" aria-label="Niveaux disponibles">
+  <div class="strip-title">PRIMAIRE <span>ET</span> COLLÈGE</div>
+  <div class="level-chips"><span>CP</span><span>CE1</span><span>CE2</span><span>CM1</span><span>CM2</span><span>6ème</span></div>
+  <div class="strip-note">SYSTÈME ÉDUCATIF MAROCAIN</div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Mes séquences{% endblock %}
+{% block breadcrumb %}Mes séquences{% endblock %}
+{% block content %}
+<div class="sequences-header">
+  <div><p class="eyebrow">VOTRE BIBLIOTHÈQUE</p><h1>Mes séquences</h1><p class="lead">Vos préparations, réunies au même endroit.</p></div>
+  <a class="button button-primary" href="/preparer">Nouvelle préparation <span aria-hidden="true">+</span></a>
+</div>
+<section class="empty-state">
+  <div class="empty-index">01 <span>—</span> 00</div>
+  <div class="empty-illustration" aria-hidden="true"><span class="paper paper-back"></span><span class="paper paper-front"><i></i><i></i><i></i></span><span class="empty-spark">+</span></div>
+  <h2>Votre prochaine idée commence ici.</h2>
+  <p>Aucune séquence enregistrée pour le moment.</p>
+  <a class="text-link" href="/preparer">Créer une préparation <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}

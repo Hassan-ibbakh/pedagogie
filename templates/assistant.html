@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Assistant pédagogique{% endblock %}
+{% block content %}
+<div class="assistant-page">
+  <header class="assistant-heading">
+    <div>
+      <p class="section-kicker"><span>VOTRE ESPACE DE TRAVAIL</span></p>
+      <h1>Construisons la suite <em>ensemble.</em></h1>
+      <p class="assistant-lead">Posez votre question, affinez une activité ou préparez une évaluation pour votre classe.</p>
+    </div>
+    <div class="assistant-heading-actions">
+      <a class="assistant-back-link" href="/espace"><span aria-hidden="true">←</span> Tableau de bord</a>
+      <span class="assistant-status"><i></i> PRÉPARATION GUIDÉE</span>
+    </div>
+  </header>
+
+  <div id="assistant-notice" class="assistant-notice" role="alert" hidden></div>
+
+  <section class="assistant-workspace" aria-label="Conversation pédagogique">
+    <div id="assistant-context" class="assistant-wizard" data-initial-subject="{{ values.subject }}">
+      <ol id="assistant-progress" class="assistant-progress" aria-label="Étapes de préparation">
+        <li data-progress-step="wizard-level" aria-current="step"><span>01</span><b>Classe</b></li>
+        <li data-progress-step="wizard-subject"><span>02</span><b>Matière</b></li>
+        <li data-progress-step="wizard-resources"><span>03</span><b>Ressources</b></li>
+        <li data-progress-step="wizard-prompt"><span>04</span><b>Consigne</b></li>
+      </ol>
+      <section class="wizard-step" id="wizard-level" aria-labelledby="level-title">
+        <div class="wizard-step-heading"><span>01</span><div><p class="eyebrow">VOTRE CLASSE</p><h2 id="level-title">Choisissez un niveau</h2></div></div>
+        <div class="form-field wizard-field"><label for="assistant-level">Niveau scolaire</label><select id="assistant-level" name="level" required><option value="" selected disabled>Choisir un niveau</option>{% for level in levels %}<option value="{{ level }}" {% if values.level == level %}selected{% endif %}>{{ level }}</option>{% endfor %}</select></div>
+      </section>
+
+      <section class="wizard-step" id="wizard-subject" aria-labelledby="subject-title" hidden>
+        <div class="wizard-step-heading"><span>02</span><div><p class="eyebrow">VOTRE CLASSE</p><h2 id="subject-title">Choisissez une matière</h2></div></div>
+        <div class="subject-choice-list" role="group" aria-label="Matière">
+          {% for subject in subjects %}<button type="button" class="subject-choice" data-subject="{{ subject }}">{{ subject }}<span aria-hidden="true">→</span></button>{% endfor %}
+        </div>
+      </section>
+
+      <section class="wizard-step" id="wizard-resources" aria-labelledby="resources-title" hidden>
+        <div class="wizard-step-heading"><span>03</span><div><p class="eyebrow">FACULTATIF</p><h2 id="resources-title">Ajoutez vos ressources</h2></div></div>
+        <p class="wizard-description">Chargez vos documents de référence pour que l’assistant puisse s’y appuyer. Vous pouvez aussi passer cette étape.</p>
+        <label class="resource-dropzone" for="assistant-files"><span class="upload-symbol" aria-hidden="true">↑</span><strong>Choisir vos fichiers</strong><span>PDF, DOCX ou TXT · 4 Mo maximum au total</span><input id="assistant-files" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" multiple></label>
+        <ul id="resource-file-list" class="resource-file-list" aria-live="polite"></ul>
+        <div class="wizard-actions"><button class="button button-primary" id="upload-resources" type="button" disabled>Charger et continuer <span aria-hidden="true">→</span></button><button class="button button-quiet" id="skip-resources" type="button">Continuer sans document</button></div>
+        <button class="resource-clear" id="clear-resources" type="button" hidden>Effacer les ressources de cette session</button>
+      </section>
+
+      <section class="wizard-step" id="wizard-prompt" aria-labelledby="prompt-title" hidden>
+        <div class="wizard-step-heading"><span>04</span><div><p class="eyebrow">VOTRE CONSIGNE</p><h2 id="prompt-title">Choisissez un prompt ou rédigez le vôtre</h2></div></div>
+        <div class="form-field wizard-field"><label for="prompt-choice">Prompts pédagogiques</label><select id="prompt-choice"><option value="" selected>Choisir un prompt</option><option value="sequence">Préparer une séquence</option><option value="differentiation">Activités différenciées</option><option value="exercises">Exercices et corrigés</option><option value="evaluation">Préparer une évaluation</option><option value="visual">Prompt pour un support visuel</option><option value="custom">Rédiger mon propre prompt</option></select></div>
+        <div class="form-field wizard-field prompt-text-field"><label for="assistant-prompt">Votre prompt</label><textarea id="assistant-prompt" rows="5" maxlength="2000" placeholder="Choisissez un modèle ci-dessus ou rédigez votre consigne…"></textarea></div>
+        <div class="form-field wizard-field"><label for="assistant-topic">Thème ou chapitre</label><input id="assistant-topic" type="text" maxlength="180" value="{{ values.topic }}" placeholder="Ex. Les fractions"></div>
+        <div class="wizard-actions"><button class="button button-primary" id="start-chat" type="button">Continuer vers la conversation <span aria-hidden="true">→</span></button><button class="button button-quiet" id="back-to-resources" type="button">Retour</button></div>
+      </section>
+    </div>
+
+    <section id="assistant-chat" class="assistant-chat" aria-label="Conversation pédagogique" hidden>
+      <div class="chat-context-bar">
+        <div class="chat-context-details"><span id="chat-context-label"></span><span id="conversation-save-status" class="conversation-save-status"></span></div>
+        <div class="chat-context-actions"><button id="clear-conversation" type="button">Effacer la conversation</button></div>
+      </div>
+      <div id="assistant-messages" class="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text">
+        <article class="chat-message assistant-message"><span class="message-mark" aria-hidden="true">c.</span><div class="message-content"><span class="message-author">CLASSE CLAIRE</span><p>Bonjour ! Votre contexte est prêt. Quelle activité souhaitez-vous préparer ?</p></div></article>
+      </div>
+      <form id="assistant-form" class="assistant-form">
+        <label class="visually-hidden" for="assistant-question">Votre demande pédagogique</label>
+        <textarea id="assistant-question" name="question" rows="2" maxlength="4000" required placeholder="Posez votre question pédagogique…"></textarea>
+        <div class="assistant-form-bottom"><span>Les réponses s’appuient sur les ressources disponibles et restent à valider par l’enseignant.</span><button class="button button-primary" type="submit">Envoyer <span aria-hidden="true">→</span></button></div>
+      </form>
+    </section>
+  </section>
+</div>
+{% endblock %}
