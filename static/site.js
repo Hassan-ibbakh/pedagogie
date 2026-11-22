@@ -61,10 +61,12 @@ window.addEventListener("resize", updateScrollProgress);
 updateScrollProgress();
 
 const hero = document.querySelector(".hero");
-const lessonSheet = document.querySelector(".lesson-sheet");
+const heroArt = document.querySelector(".hero-art");
+const sceneTilt = document.querySelector(".scene3d-tilt");
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-if (hero && lessonSheet && finePointer.matches && !motionPreference.matches) {
+// 3D scene follows the pointer (desktop only, respects reduced motion)
+if (hero && sceneTilt && finePointer.matches && !motionPreference.matches) {
   let pointerFrame = 0;
   let pointerPosition = null;
 
@@ -78,8 +80,8 @@ if (hero && lessonSheet && finePointer.matches && !motionPreference.matches) {
       const y = (pointerPosition.y - bounds.top) / bounds.height;
       hero.style.setProperty("--pointer-x", `${(x * 100).toFixed(1)}%`);
       hero.style.setProperty("--pointer-y", `${(y * 100).toFixed(1)}%`);
-      lessonSheet.style.setProperty("--sheet-tilt-x", `${((x - 0.5) * 5).toFixed(2)}deg`);
-      lessonSheet.style.setProperty("--sheet-tilt-y", `${((0.5 - y) * 4).toFixed(2)}deg`);
+      sceneTilt.style.setProperty("--tilt-x", `${((x - 0.5) * 22).toFixed(2)}deg`);
+      sceneTilt.style.setProperty("--tilt-y", `${((0.5 - y) * 12).toFixed(2)}deg`);
       pointerFrame = 0;
     });
   });
@@ -87,8 +89,49 @@ if (hero && lessonSheet && finePointer.matches && !motionPreference.matches) {
   hero.addEventListener("pointerleave", () => {
     hero.style.setProperty("--pointer-x", "72%");
     hero.style.setProperty("--pointer-y", "45%");
-    lessonSheet.style.setProperty("--sheet-tilt-x", "0deg");
-    lessonSheet.style.setProperty("--sheet-tilt-y", "0deg");
+    sceneTilt.style.setProperty("--tilt-x", "0deg");
+    sceneTilt.style.setProperty("--tilt-y", "0deg");
+  });
+}
+
+// Pause the 3D animation while the hero is off-screen or the tab is hidden
+if (heroArt && "IntersectionObserver" in window) {
+  let heroVisible = true;
+  const syncPause = () => heroArt.classList.toggle("is-paused", !heroVisible || document.hidden);
+  new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; syncPause(); }).observe(heroArt);
+  document.addEventListener("visibilitychange", syncPause);
+}
+
+// Header elevation after scrolling
+if (header) {
+  const syncHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", syncHeader, { passive: true });
+  syncHeader();
+}
+
+// Subject tiles: 3D tilt and glare under the pointer
+if (finePointer.matches && !motionPreference.matches) {
+  document.querySelectorAll(".subject-tile").forEach((tile) => {
+    let frame = 0;
+    tile.addEventListener("pointermove", (event) => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        const bounds = tile.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width;
+        const y = (event.clientY - bounds.top) / bounds.height;
+        tile.classList.add("is-tilting");
+        tile.style.setProperty("--ry", `${((x - 0.5) * 12).toFixed(2)}deg`);
+        tile.style.setProperty("--rx", `${((0.5 - y) * 10).toFixed(2)}deg`);
+        tile.style.setProperty("--gx", `${(x * 100).toFixed(1)}%`);
+        tile.style.setProperty("--gy", `${(y * 100).toFixed(1)}%`);
+        frame = 0;
+      });
+    });
+    tile.addEventListener("pointerleave", () => {
+      tile.classList.remove("is-tilting");
+      tile.style.setProperty("--rx", "0deg");
+      tile.style.setProperty("--ry", "0deg");
+    });
   });
 }
 
@@ -109,7 +152,15 @@ function syncThemeToggle() {
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
     const nextTheme = currentTheme() === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
+    const root = document.documentElement;
+    if (!motionPreference.matches) {
+      root.classList.add("theme-anim");
+      window.setTimeout(() => root.classList.remove("theme-anim"), 450);
+      themeToggle.classList.remove("is-spinning");
+      void themeToggle.offsetWidth;
+      themeToggle.classList.add("is-spinning");
+    }
+    root.dataset.theme = nextTheme;
     try { localStorage.setItem("classe-claire-theme", nextTheme); } catch (error) { }
     syncThemeToggle();
   });

@@ -311,7 +311,7 @@ if (assistantContext && assistantForm && assistantMessages) {
       localStorage.setItem(conversationStorageKey, conversationId);
       conversation = [];
       assistantMessages.replaceChildren();
-      addMessage("assistant", "Bonjour ! Votre conversation est sauvegardée. Quelle activité souhaitez-vous préparer ?");
+      addMessage("assistant", "Bonjour ! Votre conversation est sauvegardée. Quelle activité souhaitez-vous préparer ?", [], null);
       updateChatContextLabel();
       updateSaveStatus(record.expires_at);
       byId("assistant-chat").hidden = false;
@@ -380,9 +380,9 @@ if (assistantContext && assistantForm && assistantMessages) {
     text.textContent = content;
     contentBlock.append(author, text);
 
-    if (role === "assistant") {
+    if (role === "assistant" && evidenceStatus) {
       const evidence = document.createElement("span");
-      evidence.className = "evidence-label";
+      evidence.className = `evidence-label${evidenceStatus === "documented" ? " is-documented" : ""}`;
       evidence.textContent = evidenceStatus === "documented"
         ? "Réponse appuyée par des ressources"
         : "Proposition générale, non vérifiée dans les ressources";
@@ -407,6 +407,23 @@ if (assistantContext && assistantForm && assistantMessages) {
     assistantMessages.scrollTop = assistantMessages.scrollHeight;
   }
 
+  function showTypingIndicator() {
+    const article = document.createElement("article");
+    article.className = "chat-message assistant-message is-typing";
+    article.setAttribute("aria-label", "Classe Claire prépare une réponse");
+    const mark = document.createElement("span");
+    mark.className = "message-mark";
+    mark.setAttribute("aria-hidden", "true");
+    mark.textContent = "c.";
+    const dots = document.createElement("div");
+    dots.className = "typing-dots";
+    dots.innerHTML = "<i></i><i></i><i></i>";
+    article.append(mark, dots);
+    assistantMessages.append(article);
+    assistantMessages.scrollTop = assistantMessages.scrollHeight;
+    return article;
+  }
+
   assistantForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const question = questionInput.value.trim();
@@ -421,6 +438,7 @@ if (assistantContext && assistantForm && assistantMessages) {
     questionInput.value = "";
     sendButton.disabled = true;
     sendButton.textContent = "Recherche…";
+    const typingIndicator = showTypingIndicator();
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -442,6 +460,7 @@ if (assistantContext && assistantForm && assistantMessages) {
         : error.message || "Connexion impossible. Vérifiez votre réseau puis réessayez.");
       assistantMessages.scrollTop = assistantMessages.scrollHeight;
     } finally {
+      typingIndicator.remove();
       sendButton.disabled = false;
       sendButton.innerHTML = 'Envoyer <span aria-hidden="true">→</span>';
       questionInput.focus();
